@@ -29,10 +29,10 @@ class SocketHandler {
 
     public startSocketServer() {
 
-        this.IO.use(async (socket, next) => {  
-            await socket.join("cuberoom")
-            next();
-        });
+        // this.IO.use(async (socket, next) => {  
+        //     // await socket.join("cuberoom")
+        //     next();
+        // });
         this.IO.on("connection", async socket => {
            console.log("Socket connected ",socket.id);
             this.IO.to(socket.id).emit("serverMessage", "Connected to server!");
@@ -40,17 +40,22 @@ class SocketHandler {
             socket.on("disconnect", (reason) => {
                 console.log("Client disconnected |%s| reason |%s|", socket.id, reason);
             });
+            socket.on("joinRoom",async (roomID:string)=>{
+                console.log("Join room ",roomID);
+                await socket.join(roomID);
+                this.IO.to(socket.id).emit("serverMessage","Joined room "+roomID);
+            });
             socket.on("testServer", (data) => {
                 console.log("Client sent data on test server ", data);
                 this.IO.to(socket.id).emit("testServer", "Thanks for sending data have it back now " + data);
             });
-            socket.on("emitAxis",(axis:{x:number,y:number,z:number})=>{
+            socket.on("emitAxis",(axis:{x:number,y:number,z:number},roomID:string)=>{
                 // console.log(axis);
-                socket.broadcast.emit("emitAxis",axis);
+                socket.broadcast.to(roomID).emit("emitAxis",axis);
             })
-            socket.on("emitColor",(colorCode:string)=>{
-                console.log("Emitting color code ",colorCode);
-                socket.broadcast.emit("emitColor",colorCode);
+            socket.on("emitColor",(colorCode:string,roomID:string)=>{
+                // console.log("Emitting color code [%s] in room [%s]",colorCode,roomID);
+                socket.broadcast.to(roomID).emit("emitColor",colorCode);
             })
             
         });

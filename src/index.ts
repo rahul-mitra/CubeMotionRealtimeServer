@@ -37,16 +37,7 @@ app.use(cors(options))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: 1024 * 1024, type: "*" }));
 const server = http.createServer(app);
-// const io:SocketIO.Server = new SocketIO.Server(server,SocketOptions)
 let sockethandler = new SocketHandler(server, SocketOptions);
-// let conn: mongoose.Connection;
-// sockethandler.startSocketServer(DBconnectionString).then((con) => conn = con).catch(reason => { console.debug(reason) });
-// console.log(conn);
-// conn.MongooseConnection.model("users").find({}).then(doc => {
-//     console.log(doc)
-// }).catch(err => {
-//     console.debug(err);
-// });
 app.get('/', (req, res) => {
     res.send(['Invalid Data']);
 });
