@@ -9,7 +9,7 @@ import cors from 'cors';
 
 import SocketHandler from './socketEvents';
 
-const port: any = 3000;
+const port: any = 5000;
 const host = "0.0.0.0";
 const SocketOptions: ServerOptions | any = {
     transports: ["websocket"],
