@@ -45,10 +45,6 @@ class SocketHandler {
                 await socket.join(roomID);
                 this.IO.to(socket.id).emit("serverMessage","Joined room "+roomID);
             });
-            socket.on("testServer", (data) => {
-                console.log("Client sent data on test server ", data);
-                this.IO.to(socket.id).emit("testServer", "Thanks for sending data have it back now " + data);
-            });
             socket.on("emitAxisX",(x:number,roomID:string)=>{
                 // console.log(axis);
                 socket.broadcast.to(roomID).emit("emitAxisX",x);
@@ -61,8 +57,9 @@ class SocketHandler {
                 // console.log(axis);
                 socket.broadcast.to(roomID).emit("emitAxisZ",z);
             })
-            socket.on("emitColor",(colorCode:string,roomID:string)=>{
+            socket.on("emitColor",(colorCode:Array<string>,roomID:string)=>{
                 // console.log("Emitting color code [%s] in room [%s]",colorCode,roomID);
+                // console.log("Size of color object ",Buffer.byteLength(colorCode.toString(), 'utf8') + " bytes");
                 socket.broadcast.to(roomID).emit("emitColor",colorCode);
             })
             
