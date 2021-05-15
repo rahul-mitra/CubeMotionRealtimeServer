@@ -49,9 +49,17 @@ class SocketHandler {
                 console.log("Client sent data on test server ", data);
                 this.IO.to(socket.id).emit("testServer", "Thanks for sending data have it back now " + data);
             });
-            socket.on("emitAxis",(axis:{x:number,y:number,z:number},roomID:string)=>{
+            socket.on("emitAxisX",(x:number,roomID:string)=>{
                 // console.log(axis);
-                socket.broadcast.to(roomID).emit("emitAxis",axis);
+                socket.broadcast.to(roomID).emit("emitAxisX",x);
+            })
+            socket.on("emitAxisY",(y:number,roomID:string)=>{
+                // console.log(axis);
+                socket.broadcast.to(roomID).emit("emitAxisY",y);
+            })
+            socket.on("emitAxisZ",(z:number,roomID:string)=>{
+                // console.log(axis);
+                socket.broadcast.to(roomID).emit("emitAxisZ",z);
             })
             socket.on("emitColor",(colorCode:string,roomID:string)=>{
                 // console.log("Emitting color code [%s] in room [%s]",colorCode,roomID);
